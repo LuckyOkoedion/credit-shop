@@ -1,0 +1,87 @@
+CreditPolicyEntity - reset_when (month-start, month-end, bi-month-start, bi-month-end, quarter-start, quarter-end, six-months-start, six-months-end, year-start, year-end), reload_when (month-start, month-end, bi-month-start, bi-month-end, quarter-start, quarter-end, six-months-start, six-months-end, year-start, year-end), credit_limit(Float - percentage of last quarter deposit)
+
+CustomersEntity - first_name, last_name, email, password, credit_card_number, credit_card_type, credit_card_bank, credit_card_expiration, credit (belongsTo -> CreditEntity), wallet_ballance
+
+CreditEntity - customer(belongsTo -> CustomerEntity), available_credit
+
+AdminModelEntity - email, password
+
+WalletDepositsEntity - customer, date, amount
+
+WalletWithdrawalsEntity - customer, date, amount
+
+
+ProductEntity - name, brand, picture, description, amount 
+
+PurchaseEntity - product (belongsTo -> ProductEntity), cart_transaction, customer, date, paid_by_credit_or_wallet(credit, wallet)
+
+
+
+SERVICES
+
+
+WalletBallanceService (Required by PurchaseByWalletService, needs WalletService)
+
+PurchaseByCreditService
+
+PurchaseByWalletService
+
+CreditLimitValidatorService (Required by PurchaseByCreditService, ResetTimeKeeperService)
+
+
+CreditPolicyService - CRUD 
+
+CreditService - CRUD
+
+ProductService - CRUD
+
+CustomerService - CRUD
+
+AdminService - CRUD
+
+WalletService - CRUD + calculateAndGetWalletBallance()
+
+WalletDepositsService - CRUD
+
+WalletWithdrawalService - CRUD
+
+PurchaseService - CRUD
+
+PurchaseReportService - generatePurchaseReport()
+
+ScheduledResetReloadService: (Scheduled based on CreditPolicyService -> getResetWhen() and getReloadWhen())--
+--- setAllCreditToZeroAtReset(), setCreditToLimitAtReload(), isResetTimeOrLater(CreditPolicyService->getReset_when()), isReloadTimeOrLater(CreditPolicyService->getReloadWhen()), setCreditLimitIfIsReloadTimeOrLater() {end with set CreditPolicyService -> setReloadWhen}, emptyCreditLimitIfIsResetTimeOrLater() {end with set CreditPolicyService -> setResetWhen}
+
+
+UI
+
+1) Register on purchase - customerAuthController
+2) Login-Admin - adminLoginController 
+3) Login-customer on purchase - CustomerAuthController 
+4) shop-list - CustomerProductReadController
+5) shop-detail - "
+6) cart-checkout - CustomerPurchaseCreateController
+7) payment-success-page - SuccessReadAllController
+8) admin-home - AdminHomeReadAllController
+9) admin-setpolicy - AdminPolicyCrudController
+10) admin-purchases - AdminPurchasesCrudController
+11) admin-products-list - AdminProductCrudController
+12) admin-product-edit - "
+13) admin-purchase-report AdminPurchaseReportCrudController
+
+
+AUTH
+CRUD
+Create
+ReadAll
+Login
+
+
+
+
+
+
+
+
+
+
