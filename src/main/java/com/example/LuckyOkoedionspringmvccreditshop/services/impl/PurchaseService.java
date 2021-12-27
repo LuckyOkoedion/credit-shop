@@ -20,26 +20,26 @@ public class PurchaseService implements IPurchaseService {
 
     @Override
     public List<PurchaseEntity> getAll() {
-        return null;
+        return purchaseRepo.findAll();
     }
 
     @Override
     public PurchaseEntity create(PurchaseEntity theObj) {
-        return null;
+        return purchaseRepo.save(theObj);
     }
 
     @Override
     public PurchaseEntity getOneById(Long id) {
-        return null;
+        return purchaseRepo.getById(id);
     }
 
     @Override
-    public PurchaseEntity updateStudent(PurchaseEntity theObj) {
-        return null;
+    public PurchaseEntity update(PurchaseEntity theObj) {
+        return purchaseRepo.save(theObj);
     }
 
     @Override
     public void destroy(Long id) {
-
+        purchaseRepo.deleteById(id);
     }
 }

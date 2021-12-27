@@ -2,6 +2,7 @@ package com.example.LuckyOkoedionspringmvccreditshop.services.impl;
 
 import com.example.LuckyOkoedionspringmvccreditshop.repositories.AdminRepository;
 import com.example.LuckyOkoedionspringmvccreditshop.services.IAdminService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.AdminEntity;
 
@@ -25,6 +26,9 @@ public class AdminService implements IAdminService {
 
     @Override
     public AdminEntity create(AdminEntity theObj) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(theObj.getPassword());
+        theObj.setPassword(encodedPassword);
         return adminRepo.save(theObj);
     }
 
@@ -34,7 +38,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public AdminEntity updateStudent(AdminEntity theObj) {
+    public AdminEntity update(AdminEntity theObj) {
         return adminRepo.save(theObj);
     }
 

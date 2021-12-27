@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class CustomerAuthController implements IAuthMvcController {
+public class CustomerAuthController implements IAuthMvcController<CustomersEntity> {
 
     private ICustomerService customerService;
 
@@ -22,19 +22,20 @@ public class CustomerAuthController implements IAuthMvcController {
 
     @PostMapping("/register-customer")
     @Override
-    public <CustomersEntity> String register( @ModelAttribute("user") CustomersEntity modelAttribute) {
+    public String register( @ModelAttribute("user") CustomersEntity modelAttribute) {
         return "redirect:/login-customer";
     }
 
     @GetMapping("/register-customer")
     @Override
     public String theRegisterForm(Model model) {
+        model.addAttribute("user", new CustomersEntity());
         return "register_on_purchase";
     }
 
     @PostMapping("/login-customer")
     @Override
-    public <CustomersEntity> String login( @ModelAttribute("user") CustomersEntity modelAttribute) {
+    public String login( @ModelAttribute("user") CustomersEntity modelAttribute) {
         return "redirect:/cart_checkout";
     }
 

@@ -1,20 +1,24 @@
 package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
-import com.example.LuckyOkoedionspringmvccreditshop.controllers.ICrudMvcController;
+import com.example.LuckyOkoedionspringmvccreditshop.controllers.ICrudPictureMvcController;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.ProductEntity;
+import com.example.LuckyOkoedionspringmvccreditshop.pojo.FileResponse;
 import com.example.LuckyOkoedionspringmvccreditshop.services.IProductService;
+import com.example.LuckyOkoedionspringmvccreditshop.services.impl.FileService;
 import com.example.LuckyOkoedionspringmvccreditshop.services.impl.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
 
 @Controller
-public class AdminProductCrudController implements ICrudMvcController {
+public class AdminProductCrudController implements ICrudPictureMvcController<ProductEntity> {
 
     private IProductService productService;
+    private FileService fileService;
 
     public AdminProductCrudController(ProductService theProductService) {
         super();
@@ -24,14 +28,23 @@ public class AdminProductCrudController implements ICrudMvcController {
 
     @PostMapping("/add-product")
     @Override
-    public <ProductEntity> String create( @ModelAttribute("product") ProductEntity modelAttribute) {
+    public String create( @ModelAttribute("product") ProductEntity product, @RequestParam("file") MultipartFile file,
+                                          RedirectAttributes redirectAttributes) throws IOException {
+        FileResponse uploadResult = fileService.save(file);
+        product.setSource_image_id(uploadResult.getId());
+        product.setPicture_url(uploadResult.getUrl());
+        productService.create(product);
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
         return "redirect:/admin-products-list";
     }
 
     @GetMapping("/add-product")
     @Override
     public String theCreateForm(Model model) {
+        model.addAttribute("product", new ProductEntity());
         return "admin_add_product";
+
     }
 
     @GetMapping("/admin-products-list")
@@ -45,18 +58,20 @@ public class AdminProductCrudController implements ICrudMvcController {
         return "redirect:/admin-products-list";
     }
 
-    @GetMapping("edit-product/{id}")
+    @GetMapping("/edit-product/{id}")
     @Override
     public String theUpdateForm(@PathVariable Long id, Model model) {
         return "admin_product_edit";
     }
 
-    @PostMapping("edit-product/{id}")
+    @PostMapping("/edit-product/{id}")
     @Override
-    public <ProductEntity> String update(@PathVariable Long id, Model model, @ModelAttribute("product") ProductEntity modelAttribute) {
+    public String update(@PathVariable Long id, Model model, @ModelAttribute("product") ProductEntity modelAttribute, @RequestParam("file") MultipartFile file,
+                                         RedirectAttributes redirectAttributes) {
         return "redirect:/admin_products_list";
     }
 
+    @DeleteMapping("/delete-product/{id}")
     @Override
     public String delete(@PathVariable Long id) {
         return "redirect:/admin-products-list";

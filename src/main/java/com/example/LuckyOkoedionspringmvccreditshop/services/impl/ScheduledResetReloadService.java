@@ -1,27 +1,28 @@
 package com.example.LuckyOkoedionspringmvccreditshop.services.impl;
-
-import com.example.LuckyOkoedionspringmvccreditshop.repositories.CreditRepository;
+import java.math.BigDecimal;
+import com.example.LuckyOkoedionspringmvccreditshop.services.ICreditService;
 import com.example.LuckyOkoedionspringmvccreditshop.services.IScheduledResetReloadService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ScheduledResetReloadService implements IScheduledResetReloadService {
 
-    private CreditRepository creditRepo;
+    private ICreditService creditService;
 
-    public ScheduledResetReloadService(CreditRepository theCreditRepo) {
+    public ScheduledResetReloadService(CreditService theCreditService) {
         super();
-        this.creditRepo = theCreditRepo;
+        this.creditService = theCreditService;
     }
 
     @Override
-    public Boolean setAllCreditToZeroAtReset() {
-        return null;
+    public void setAllCreditToZeroAtReset() {
+        BigDecimal theValue = new BigDecimal("0");
+        creditService.updateAllCustomersCredit(theValue);
     }
 
     @Override
-    public Boolean setCreditToLimitAtReload(Integer limitPercentage) {
-        return null;
+    public void setCreditToLimitAtReload(Integer limitPercentage) {
+        creditService.updateAllCustomersCreditByPercentage(limitPercentage);
     }
 
 }

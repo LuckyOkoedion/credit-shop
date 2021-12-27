@@ -19,7 +19,7 @@ public class AdminPurchasesReadAllController implements IReadAllMvcController {
         this.purchaseService = thePurchaseService;
     }
 
-    @GetMapping("admin-purchases")
+    @GetMapping("/admin-purchases")
     @Override
     public String getAll(Model model) {
         return "admin_purchases";

@@ -21,7 +21,7 @@ public class AdminPurchaseReportCreateController {
         this.purchaseReportService = thePurchaseReportService;
     }
 
-    @PostMapping("generate-purchase-report")
+    @PostMapping("/generate-purchase-report")
     public String create() {
         return "admin_purchase_report";
     }

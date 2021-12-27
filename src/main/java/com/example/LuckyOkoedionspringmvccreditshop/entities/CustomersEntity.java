@@ -1,4 +1,5 @@
 package com.example.LuckyOkoedionspringmvccreditshop.entities;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class CustomersEntity {
     private String first_name;
     @Column(nullable = false)
     private String last_name;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
     private String password;
@@ -32,32 +33,22 @@ public class CustomersEntity {
     @OneToOne(mappedBy = "cutomer", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private CreditEntity credit;
-    @OneToMany(
-            mappedBy = "customer",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WalletDepositsEntity> wallet_deposits = new ArrayList<>();
-    @OneToMany(
-            mappedBy = "customer",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WalletWithdrawalsEntity> wallet_withdrawals = new ArrayList<>();
-    @OneToMany(
-            mappedBy = "customer",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PurchaseEntity> purchase = new ArrayList<>();
 
-
-    public  CustomersEntity() {
-
+    public CustomersEntity() {
+        this.wallet_ballance = new BigDecimal("0");
     }
 
-
-    public  CustomersEntity(  String first_name, String last_name, String email, String password, String credit_card_number, String credit_card_type, String credit_card_bank, String credit_card_expiration, CreditEntity credit, List<WalletDepositsEntity> wallet_deposits, List<WalletWithdrawalsEntity> wallet_withdrawals, List<PurchaseEntity> purchase, BigDecimal wallet_ballance) {
+    public CustomersEntity(String first_name, String last_name, String email, String password,
+            String credit_card_number, String credit_card_type, String credit_card_bank, String credit_card_expiration,
+            CreditEntity credit, List<WalletDepositsEntity> wallet_deposits,
+            List<WalletWithdrawalsEntity> wallet_withdrawals, List<PurchaseEntity> purchase,
+            BigDecimal wallet_ballance) {
         super();
         this.first_name = first_name;
         this.last_name = last_name;
@@ -100,7 +91,7 @@ public class CustomersEntity {
     }
 
     public void removeWallet_withdrawals(WalletWithdrawalsEntity wallet_withdrawal) {
-        wallet_deposits.remove(wallet_withdrawal);
+        wallet_withdrawals.remove(wallet_withdrawal);
         wallet_withdrawal.setCustomer(null);
     }
 

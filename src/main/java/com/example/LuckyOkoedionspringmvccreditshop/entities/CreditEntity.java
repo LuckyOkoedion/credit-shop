@@ -1,4 +1,5 @@
 package com.example.LuckyOkoedionspringmvccreditshop.entities;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -10,17 +11,18 @@ public class CreditEntity {
     private Long id;
     @OneToOne
     @MapsId
-    private CustomersEntity  customer;
+    private CustomersEntity customer;
     @Column
     private BigDecimal available_credit;
     @Column
     private BigDecimal wallet_balance;
 
     public CreditEntity() {
-
+        this.wallet_balance = new BigDecimal("0");
+        this.available_credit = new BigDecimal("0");
     }
 
-    public CreditEntity(CustomersEntity  customer, BigDecimal available_credit, BigDecimal wallet_balance) {
+    public CreditEntity(CustomersEntity customer, BigDecimal available_credit, BigDecimal wallet_balance) {
         super();
         this.customer = customer;
         this.available_credit = available_credit;

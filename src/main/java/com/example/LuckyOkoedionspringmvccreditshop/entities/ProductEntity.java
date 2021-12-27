@@ -15,7 +15,7 @@ public class ProductEntity {
     @Column
     private String brand;
     @Column
-    private Long source_image_id;
+    private String source_image_id;
     @Column
     private String description;
     @Column
@@ -35,7 +35,7 @@ public class ProductEntity {
 
     }
 
-    public ProductEntity(String name, String brand, Long source_image_id, String description, BigDecimal amount, String picture_url, int quantity, List<PurchaseEntity> purchase ) {
+    public ProductEntity(String name, String brand, String source_image_id, String description, BigDecimal amount, String picture_url, int quantity, List<PurchaseEntity> purchase ) {
         this.name = name;
         this.brand = brand;
         this.source_image_id = source_image_id;
@@ -80,11 +80,11 @@ public class ProductEntity {
         this.brand = brand;
     }
 
-    public Long getSource_image_id() {
+    public String getSource_image_id() {
         return source_image_id;
     }
 
-    public void setSource_image_id(Long source_image_id) {
+    public void setSource_image_id(String source_image_id) {
         this.source_image_id = source_image_id;
     }
 

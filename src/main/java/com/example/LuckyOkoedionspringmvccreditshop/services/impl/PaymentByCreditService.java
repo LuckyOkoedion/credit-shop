@@ -1,5 +1,6 @@
 package com.example.LuckyOkoedionspringmvccreditshop.services.impl;
 
+import com.example.LuckyOkoedionspringmvccreditshop.services.ICreditService;
 import com.example.LuckyOkoedionspringmvccreditshop.services.IPurchaseByCreditService;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +9,7 @@ import java.math.BigDecimal;
 @Service
 public class PaymentByCreditService implements IPurchaseByCreditService {
 
-    private CreditService creditService;
+    private ICreditService creditService;
 
     public PaymentByCreditService(CreditService theCreditService) {
         super();
@@ -16,7 +17,7 @@ public class PaymentByCreditService implements IPurchaseByCreditService {
     }
 
     @Override
-    public void pay(BigDecimal amount, Long customerId) {
-
+    public void pay(BigDecimal amount, Long customerId, String transaction_id) {
+        this.creditService.subtractValueFromCreditEntityAvailableCreditValueForCustomer(amount, customerId, transaction_id);
     }
 }

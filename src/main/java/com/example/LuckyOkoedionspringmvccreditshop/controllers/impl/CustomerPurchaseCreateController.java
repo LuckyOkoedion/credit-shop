@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class CustomerPurchaseCreateController implements ICreateMvcController {
+public class CustomerPurchaseCreateController implements ICreateMvcController<PurchaseEntity> {
 
     private IPurchaseService purchaseService;
 
@@ -21,7 +21,7 @@ public class CustomerPurchaseCreateController implements ICreateMvcController {
 
     @PostMapping("/purchase")
     @Override
-    public <PurchaseEntity> String create( @ModelAttribute("student") PurchaseEntity modelAttribute) {
+    public String create( @ModelAttribute("student") PurchaseEntity modelAttribute) {
         return "payment_success_page";
     }
 

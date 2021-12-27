@@ -35,7 +35,7 @@ public class CreditPolicyService implements ICreditPolicyService {
     }
 
     @Override
-    public CreditPolicyEntity updateStudent(CreditPolicyEntity theObj) {
+    public CreditPolicyEntity update(CreditPolicyEntity theObj) {
         return creditPolicyRepo.save(theObj);
     }
 

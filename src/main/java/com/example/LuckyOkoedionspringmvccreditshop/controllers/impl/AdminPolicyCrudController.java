@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class AdminPolicyCrudController implements ICrudMvcController {
+public class AdminPolicyCrudController implements ICrudMvcController<CreditPolicyEntity> {
 
     private ICreditPolicyService creditPolicyService;
 
@@ -23,7 +23,7 @@ public class AdminPolicyCrudController implements ICrudMvcController {
 
     @PostMapping("/policy")
     @Override
-    public <CreditPolicyEntity> String create(@ModelAttribute("credit-policy") CreditPolicyEntity modelAttribute) {
+    public String create(@ModelAttribute("credit-policy") CreditPolicyEntity modelAttribute) {
         return "redirect:/admin";
     }
 
@@ -52,7 +52,7 @@ public class AdminPolicyCrudController implements ICrudMvcController {
 
     @PostMapping("policy-edit/{id}")
     @Override
-    public <CreditPolicyEntity> String update(@PathVariable Long id, Model model, @ModelAttribute("credit-policy") CreditPolicyEntity modelAttribute) {
+    public String update(@PathVariable Long id, Model model, @ModelAttribute("credit-policy") CreditPolicyEntity modelAttribute) {
         return "redirect:/admin";
     }
 

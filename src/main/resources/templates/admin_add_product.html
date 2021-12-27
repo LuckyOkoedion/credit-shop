@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="ISO-8859-1">
     <title>Credit Shop - Admin Add Product</title>
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -10,6 +10,62 @@
     <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 <body>
+
+<div class="container text-center">
+    <div>
+        <h1>Add Product to Shop</h1>
+    </div>
+    <form th:action="@{/register-customer}" th:object="${product}"
+          method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Product Name: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{name}" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Brand Name: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{brand}" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Product Description: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{description}" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Price: </label>
+                <div class="col-8">
+                    <input type="number" th:field="*{amount}" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Quantity in Stock: </label>
+                <div class="col-8">
+                    <input type="number" th:field="*{quantity}" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Product Picture: </label>
+                <div class="col-8">
+                    <input type="file" name="file" class="form-control" required />
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

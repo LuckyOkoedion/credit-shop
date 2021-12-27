@@ -1,6 +1,8 @@
 package com.example.LuckyOkoedionspringmvccreditshop.entities;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Date;
 
 @Entity
 @Table
@@ -13,7 +15,10 @@ public class WalletDepositsEntity {
     private CustomersEntity customer;
 
     @Column
-    private String date;
+    private Date date;
+
+    @Column
+    private String transaction_id;
 
     @Column
     private BigDecimal amount;
@@ -22,14 +27,14 @@ public class WalletDepositsEntity {
 
     }
 
-    public WalletDepositsEntity( BigDecimal amount, String date, CustomersEntity customer) {
+    public WalletDepositsEntity(BigDecimal amount, Date date, CustomersEntity customer, String transaction_id) {
         super();
         this.amount = amount;
         this.customer = customer;
         this.date = date;
+        this.transaction_id = transaction_id;
 
     }
-
 
     public CustomersEntity getCustomer() {
         return customer;
@@ -39,10 +44,20 @@ public class WalletDepositsEntity {
         this.customer = customer;
     }
 
+    public String getTransaction_id() {
+        return transaction_id;
+    }
+
+    public void setTransaction_id(String transaction_id) {
+        this.transaction_id = transaction_id;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof WalletDepositsEntity )) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof WalletDepositsEntity))
+            return false;
         return id != null && id.equals(((WalletDepositsEntity) o).getId());
     }
 
@@ -50,7 +65,6 @@ public class WalletDepositsEntity {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 
     public Long getId() {
         return id;
@@ -60,11 +74,11 @@ public class WalletDepositsEntity {
         this.id = id;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

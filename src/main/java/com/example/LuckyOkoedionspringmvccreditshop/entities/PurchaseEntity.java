@@ -1,5 +1,7 @@
 package com.example.LuckyOkoedionspringmvccreditshop.entities;
 
+import java.sql.Date;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,16 +15,15 @@ public class PurchaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private CustomersEntity customer;
     @Column
-    private String date;
+    private Date date;
     @Column
-    private  String paid_by_credit_or_wallet;
+    private String paid_by_credit_or_wallet;
 
-
-    public  PurchaseEntity() {
+    public PurchaseEntity() {
 
     }
 
-    public  PurchaseEntity(ProductEntity product, CustomersEntity customer, String date,String paid_by_credit_or_wallet ) {
+    public PurchaseEntity(ProductEntity product, CustomersEntity customer, Date date, String paid_by_credit_or_wallet) {
         super();
         this.customer = customer;
         this.product = product;
@@ -32,8 +33,10 @@ public class PurchaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PurchaseEntity )) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof PurchaseEntity))
+            return false;
         return id != null && id.equals(((PurchaseEntity) o).getId());
     }
 
@@ -66,11 +69,11 @@ public class PurchaseEntity {
         this.customer = customer;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -81,6 +84,5 @@ public class PurchaseEntity {
     public void setPaid_by_credit_or_wallet(String paid_by_credit_or_wallet) {
         this.paid_by_credit_or_wallet = paid_by_credit_or_wallet;
     }
-
 
 }

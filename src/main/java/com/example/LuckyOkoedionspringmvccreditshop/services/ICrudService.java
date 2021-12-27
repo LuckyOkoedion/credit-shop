@@ -9,7 +9,7 @@ public interface ICrudService<T> {
 
      T getOneById(Long id);
 
-     T updateStudent(T theObj);
+     T update(T theObj);
 
     void destroy(Long id);
 }

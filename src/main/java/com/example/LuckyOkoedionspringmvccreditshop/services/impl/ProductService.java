@@ -20,26 +20,26 @@ public class ProductService implements IProductService {
 
     @Override
     public List<ProductEntity> getAll() {
-        return null;
+        return productRepo.findAll();
     }
 
     @Override
     public ProductEntity create(ProductEntity theObj) {
-        return null;
+        return productRepo.save(theObj);
     }
 
     @Override
     public ProductEntity getOneById(Long id) {
-        return null;
+        return productRepo.getById(id);
     }
 
     @Override
-    public ProductEntity updateStudent(ProductEntity theObj) {
-        return null;
+    public ProductEntity update(ProductEntity theObj) {
+        return productRepo.save(theObj);
     }
 
     @Override
     public void destroy(Long id) {
-
+        productRepo.deleteById(id);
     }
 }

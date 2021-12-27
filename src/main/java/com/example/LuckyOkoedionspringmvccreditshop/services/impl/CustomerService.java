@@ -4,21 +4,24 @@ import com.example.LuckyOkoedionspringmvccreditshop.entities.CreditEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.CustomersEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.repositories.CreditRepository;
 import com.example.LuckyOkoedionspringmvccreditshop.repositories.CustomersRepository;
+import com.example.LuckyOkoedionspringmvccreditshop.services.ICreditService;
 import com.example.LuckyOkoedionspringmvccreditshop.services.ICustomerService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 
 @Service
 public class CustomerService implements ICustomerService {
     private CustomersRepository customersRepo;
-    private CreditRepository creditRepo;
+    private ICreditService creditService;
 
-    public  CustomerService(CustomersRepository theCustomersRepo, CreditRepository theCreditRepo) {
+    public  CustomerService(CustomersRepository theCustomersRepo, CreditService theCreditService) {
         super();
         this.customersRepo = theCustomersRepo;
-        this.creditRepo = theCreditRepo;
+        this.creditService = theCreditService;
     }
 
 
@@ -29,6 +32,9 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public CustomersEntity create(CustomersEntity theObj) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(theObj.getPassword());
+        theObj.setPassword(encodedPassword);
         return customersRepo.save(theObj);
     }
 
@@ -39,7 +45,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public CustomersEntity updateStudent(CustomersEntity theObj) {
+    public CustomersEntity update(CustomersEntity theObj) {
         return customersRepo.save(theObj);
     }
 
@@ -52,7 +58,7 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public Boolean createCreditEntityForCustomer(Long customerId, CreditEntity theObj) {
-        CreditEntity result = creditRepo.save(theObj);
+        CreditEntity result = creditService.create(theObj);
         if (result  instanceof CreditEntity) {
             return true;
         } else {
@@ -61,7 +67,9 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Boolean updateCreditEntityWalletBallanceValueForCustomer(BigDecimal valueToAddOrSubtract, Long customerId) {
-        return null;
+    public void subtractValueFromCreditEntityWalletBallanceValueForCustomer(BigDecimal valueToSubtract, Long customerId, String transaction_id) {
+        creditService.subtractValueFromCreditEntityAvailableCreditValueForCustomer(valueToSubtract, customerId, transaction_id);
     }
+
+
 }

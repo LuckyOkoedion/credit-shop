@@ -2,7 +2,7 @@ package com.example.LuckyOkoedionspringmvccreditshop.services;
 
 import com.example.LuckyOkoedionspringmvccreditshop.entities.PurchaseEntity;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public interface IPurchaseReportService {
