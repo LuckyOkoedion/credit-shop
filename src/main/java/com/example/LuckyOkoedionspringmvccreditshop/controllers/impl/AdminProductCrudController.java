@@ -28,8 +28,8 @@ public class AdminProductCrudController implements ICrudPictureMvcController<Pro
 
     @PostMapping("/add-product")
     @Override
-    public String create( @ModelAttribute("product") ProductEntity product, @RequestParam("file") MultipartFile file,
-                                          RedirectAttributes redirectAttributes) throws IOException {
+    public String create(@ModelAttribute("product") ProductEntity product, @RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) throws IOException {
         FileResponse uploadResult = fileService.save(file);
         product.setSource_image_id(uploadResult.getId());
         product.setPicture_url(uploadResult.getUrl());
@@ -50,6 +50,7 @@ public class AdminProductCrudController implements ICrudPictureMvcController<Pro
     @GetMapping("/admin-products-list")
     @Override
     public String getAll(Model model) {
+        model.addAttribute("products", productService.getAll());
         return "admin_products_list";
     }
 
@@ -61,19 +62,28 @@ public class AdminProductCrudController implements ICrudPictureMvcController<Pro
     @GetMapping("/edit-product/{id}")
     @Override
     public String theUpdateForm(@PathVariable Long id, Model model) {
+        model.addAttribute("product", productService.getOneById(id));
         return "admin_product_edit";
     }
 
     @PostMapping("/edit-product/{id}")
     @Override
-    public String update(@PathVariable Long id, Model model, @ModelAttribute("product") ProductEntity modelAttribute, @RequestParam("file") MultipartFile file,
-                                         RedirectAttributes redirectAttributes) {
-        return "redirect:/admin_products_list";
+    public String update(@PathVariable Long id, Model model, @ModelAttribute("product") ProductEntity product,
+            @RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) throws IOException {
+        FileResponse uploadResult = fileService.save(file);
+        product.setSource_image_id(uploadResult.getId());
+        product.setPicture_url(uploadResult.getUrl());
+        productService.update(product);
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+        return "redirect:/admin-products-list";
     }
 
     @DeleteMapping("/delete-product/{id}")
     @Override
     public String delete(@PathVariable Long id) {
+        productService.destroy(id);
         return "redirect:/admin-products-list";
     }
 }

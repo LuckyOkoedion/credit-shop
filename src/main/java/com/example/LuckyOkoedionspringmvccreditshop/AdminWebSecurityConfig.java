@@ -52,9 +52,9 @@ public class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/policy", "/policy-edit", "/add-product", "/admin-products-list", "/edit-product", "/delete-product", "/generate-purchase-report", "/admin-purchases").authenticated()
                 .and()
                 .formLogin()
-                .loginPage("login-customer")
+                .loginPage("/admin-login")
                 .usernameParameter("email")
-                .defaultSuccessUrl("/shop")
+                .defaultSuccessUrl("/admin")
                 .permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll();

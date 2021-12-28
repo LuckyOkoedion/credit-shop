@@ -23,13 +23,14 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
 
     @PostMapping("/policy")
     @Override
-    public String create(@ModelAttribute("credit-policy") CreditPolicyEntity modelAttribute) {
+    public String create(@ModelAttribute("policy") CreditPolicyEntity policy) {
         return "redirect:/admin";
     }
 
     @GetMapping("/policy")
     @Override
     public String theCreateForm(Model model) {
+        model.addAttribute("policy", new CreditPolicyEntity());
         return "admin_setpolicy";
     }
 
@@ -47,17 +48,19 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
     @GetMapping("/policy-edit/{id}")
     @Override
     public String theUpdateForm(@PathVariable Long id, Model model) {
+        model.addAttribute("policy", creditPolicyService.getOneById(id));
         return "admin_policy_edit";
     }
 
     @PostMapping("policy-edit/{id}")
     @Override
-    public String update(@PathVariable Long id, Model model, @ModelAttribute("credit-policy") CreditPolicyEntity modelAttribute) {
+    public String update(@PathVariable Long id, Model model,
+            @ModelAttribute("policy") CreditPolicyEntity policy) {
         return "redirect:/admin";
     }
 
     @Override
-    public String delete( @PathVariable Long id) {
+    public String delete(@PathVariable Long id) {
         return "redirect:/admin";
     }
 }

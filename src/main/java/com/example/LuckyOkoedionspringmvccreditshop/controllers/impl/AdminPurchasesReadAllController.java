@@ -22,6 +22,7 @@ public class AdminPurchasesReadAllController implements IReadAllMvcController {
     @GetMapping("/admin-purchases")
     @Override
     public String getAll(Model model) {
+        model.addAttribute("purchases", purchaseService.getAll());
         return "admin_purchases";
     }
 

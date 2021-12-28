@@ -55,7 +55,7 @@ public class MainWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/purchase", "/checkout").authenticated()
                 .and()
                 .formLogin()
-                .loginPage("login-customer")
+                .loginPage("/login-customer")
                 .usernameParameter("email")
                 .defaultSuccessUrl("/shop")
                 .permitAll()

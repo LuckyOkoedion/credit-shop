@@ -2,10 +2,12 @@ package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
 import com.example.LuckyOkoedionspringmvccreditshop.controllers.ICreateMvcController;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.PurchaseEntity;
+import com.example.LuckyOkoedionspringmvccreditshop.pojo.GeneratePurchaseReportDto;
 import com.example.LuckyOkoedionspringmvccreditshop.services.IPurchaseReportService;
 import com.example.LuckyOkoedionspringmvccreditshop.services.impl.PurchaseReportService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -22,13 +24,15 @@ public class AdminPurchaseReportCreateController {
     }
 
     @PostMapping("/generate-purchase-report")
-    public String create() {
+    public String create(@ModelAttribute("dto") GeneratePurchaseReportDto dto, Model model) {
+        model.addAttribute("report", purchaseReportService.generatePurchaseReport(dto.getStart_date(), dto.getEnd_date()));
         return "admin_purchase_report";
     }
 
+    @GetMapping("/generate-purchase-report")
     public String theCreateForm(Model model) {
+        model.addAttribute("dto", new GeneratePurchaseReportDto());
         return "redirect:/admin";
     }
-
 
 }

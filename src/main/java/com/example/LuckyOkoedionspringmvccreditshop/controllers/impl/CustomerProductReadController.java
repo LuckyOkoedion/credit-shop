@@ -21,12 +21,14 @@ public class CustomerProductReadController implements IReadMvcController {
     @GetMapping("/shop")
     @Override
     public String getAll(Model model) {
+        model.addAttribute("products", productService.getAll());
         return "shop_list";
     }
 
     @GetMapping("/shop/{id}")
     @Override
     public String getOneById(@PathVariable Long id, Model model) {
+        model.addAttribute("product", productService.getOneById(id));
         return "shop_detail";
     }
 }
