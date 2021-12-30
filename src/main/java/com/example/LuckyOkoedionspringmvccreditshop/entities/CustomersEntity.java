@@ -30,7 +30,7 @@ public class CustomersEntity {
     private String credit_card_bank;
     @Column
     private String credit_card_expiration;
-    @OneToOne(mappedBy = "cutomer", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private CreditEntity credit;
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)

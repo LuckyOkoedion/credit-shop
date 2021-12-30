@@ -4,13 +4,12 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "files")
+@Table
 public class FileEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column
     private String name;
     @Column
@@ -22,11 +21,28 @@ public class FileEntity {
     @Column
     private byte[] data;
 
-    public String getId() {
+
+    public FileEntity() {
+
+    }
+
+    public FileEntity(String name, String contentType, Long size, byte[] data) {
+
+        super();
+
+        this.name = name;
+        this.contentType = contentType;
+        this.size = size;
+        this.data = data;
+    }
+
+
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

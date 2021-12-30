@@ -72,4 +72,10 @@ public class CustomerService implements ICustomerService {
     }
 
 
+    @Override
+    public CustomersEntity findByEmail(String email) {
+        return customersRepo.findByEmail(email);
+    }
+
+
 }

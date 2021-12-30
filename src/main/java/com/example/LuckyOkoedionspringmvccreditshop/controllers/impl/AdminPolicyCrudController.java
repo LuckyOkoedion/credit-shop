@@ -24,6 +24,7 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
     @PostMapping("/policy")
     @Override
     public String create(@ModelAttribute("policy") CreditPolicyEntity policy) {
+        creditPolicyService.create(policy);
         return "redirect:/admin";
     }
 
@@ -56,6 +57,14 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
     @Override
     public String update(@PathVariable Long id, Model model,
             @ModelAttribute("policy") CreditPolicyEntity policy) {
+        CreditPolicyEntity thePolicy = creditPolicyService.getOneById(id);
+        thePolicy.setId(id);
+        thePolicy.setCredit_limit(policy.getCredit_limit());
+        thePolicy.setReload_when(policy.getReload_when());
+        thePolicy.setReset_when(policy.getReset_when());
+
+        this.creditPolicyService.update(thePolicy);
+
         return "redirect:/admin";
     }
 

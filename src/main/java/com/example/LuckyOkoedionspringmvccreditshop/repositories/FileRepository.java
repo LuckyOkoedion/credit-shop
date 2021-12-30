@@ -2,6 +2,8 @@ package com.example.LuckyOkoedionspringmvccreditshop.repositories;
 
 import com.example.LuckyOkoedionspringmvccreditshop.entities.FileEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface FileRepository extends JpaRepository<FileEntity, String> {
+@Repository
+public interface FileRepository extends JpaRepository<FileEntity, Long> {
 }

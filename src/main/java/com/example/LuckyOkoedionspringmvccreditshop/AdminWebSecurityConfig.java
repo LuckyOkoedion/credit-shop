@@ -47,8 +47,7 @@ public class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/shop", "/register-admin", "/admin-login", "/register-customer", "/login-customer")
-                .permitAll()
+                .antMatchers("/", "/shop", "/register-admin", "/admin-login", "/register-customer", "/login-customer", "/show-product-image").permitAll()
                 .antMatchers("/policy", "/policy-edit", "/add-product", "/admin-products-list", "/edit-product", "/delete-product", "/generate-purchase-report", "/admin-purchases").authenticated()
                 .and()
                 .formLogin()

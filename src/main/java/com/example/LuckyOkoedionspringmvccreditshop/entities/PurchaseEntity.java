@@ -18,17 +18,20 @@ public class PurchaseEntity {
     private Date date;
     @Column
     private String paid_by_credit_or_wallet;
+    @Column
+    private String transaction_id;
 
     public PurchaseEntity() {
 
     }
 
-    public PurchaseEntity(ProductEntity product, CustomersEntity customer, Date date, String paid_by_credit_or_wallet) {
+    public PurchaseEntity(ProductEntity product, CustomersEntity customer, Date date, String paid_by_credit_or_wallet, String transaction_id) {
         super();
         this.customer = customer;
         this.product = product;
         this.date = date;
         this.paid_by_credit_or_wallet = paid_by_credit_or_wallet;
+        this.transaction_id = transaction_id;
     }
 
     @Override
@@ -84,5 +87,14 @@ public class PurchaseEntity {
     public void setPaid_by_credit_or_wallet(String paid_by_credit_or_wallet) {
         this.paid_by_credit_or_wallet = paid_by_credit_or_wallet;
     }
+
+    public String getTransaction_id() {
+        return transaction_id;
+    }
+
+    public void setTransaction_id(String transaction_id) {
+        this.transaction_id = transaction_id;
+    }
+
 
 }

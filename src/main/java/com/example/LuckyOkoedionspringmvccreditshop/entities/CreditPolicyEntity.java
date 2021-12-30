@@ -17,13 +17,13 @@ public class CreditPolicyEntity {
     private String reload_when;
 
     @Column
-    private String credit_limit;
+    private Integer credit_limit;
 
     public CreditPolicyEntity() {
 
     }
 
-    public CreditPolicyEntity(String reset_when, String reload_when, String credit_limit) {
+    public CreditPolicyEntity(String reset_when, String reload_when, Integer credit_limit) {
         super();
         this.credit_limit = credit_limit;
         this.reload_when = reload_when;
@@ -42,7 +42,7 @@ public class CreditPolicyEntity {
         return reload_when;
     }
 
-    public String getCredit_limit() {
+    public Integer getCredit_limit() {
         return credit_limit;
     }
 
@@ -58,7 +58,7 @@ public class CreditPolicyEntity {
         this.reload_when = reload_when;
     }
 
-    public void setCredit_limit(String credit_limit) {
+    public void setCredit_limit(Integer credit_limit) {
         this.credit_limit = credit_limit;
     }
 }

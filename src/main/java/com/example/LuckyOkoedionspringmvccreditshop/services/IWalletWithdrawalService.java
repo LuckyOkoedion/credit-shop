@@ -5,6 +5,6 @@ import com.example.LuckyOkoedionspringmvccreditshop.entities.WalletWithdrawalsEn
 import java.math.BigDecimal;
 
 public interface IWalletWithdrawalService extends ICrudService<WalletWithdrawalsEntity> {
-    void updateCreditEntityWalletBallanceValueForCustomer(BigDecimal valueToAddOrSubtract, Long customerId);
-    void updateCustomersEntityWalletBallanceValue(BigDecimal valueToAddOrSubtract, Long customerId);
+    void updateCreditEntityWalletBallanceValueForCustomer(BigDecimal valueSubtract, Long customerId);
+    void updateCustomersEntityWalletBallanceValue(BigDecimal valueSubtract, Long customerId);
 }

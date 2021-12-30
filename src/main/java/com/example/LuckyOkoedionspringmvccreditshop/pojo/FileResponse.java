@@ -2,7 +2,7 @@ package com.example.LuckyOkoedionspringmvccreditshop.pojo;
 
 public class FileResponse {
 
-    private String id;
+    private Long id;
     private String name;
     private Long size;
     private String url;
@@ -12,7 +12,7 @@ public class FileResponse {
 
     }
 
-    public  FileResponse(String id, String name, Long size, String url, String contentType) {
+    public  FileResponse(Long id, String name, Long size, String url, String contentType) {
         this.contentType = contentType;
         this.id = id;
         this.name = name;
@@ -20,11 +20,11 @@ public class FileResponse {
         this.url = url;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

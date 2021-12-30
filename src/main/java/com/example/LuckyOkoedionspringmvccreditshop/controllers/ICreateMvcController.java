@@ -4,5 +4,5 @@ import org.springframework.ui.Model;
 
 public interface ICreateMvcController<E> {
     String create(E modelAttribute);
-    String theCreateForm(Model model);
+    String theCreateForm(Model model, E modelAttribute);
 }

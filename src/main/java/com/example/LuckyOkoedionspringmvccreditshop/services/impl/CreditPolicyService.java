@@ -26,7 +26,13 @@ public class CreditPolicyService implements ICreditPolicyService {
 
     @Override
     public CreditPolicyEntity create(CreditPolicyEntity theObj) {
-        return creditPolicyRepo.save(theObj);
+        Long numberOfEnteries = this.creditPolicyRepo.count();
+        if ((numberOfEnteries == null) || ( numberOfEnteries < 1)) {
+            return creditPolicyRepo.save(theObj);
+        } else {
+            return new CreditPolicyEntity();
+        }
+
     }
 
     @Override

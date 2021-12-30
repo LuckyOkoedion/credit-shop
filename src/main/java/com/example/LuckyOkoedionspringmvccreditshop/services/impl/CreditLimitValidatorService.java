@@ -24,7 +24,8 @@ public class CreditLimitValidatorService implements ICreditLimitValidatorService
         CreditEntity theRecord = creditRepo.findByCustomerId(customerId);
         BigDecimal currentCredit = theRecord.getAvailable_credit();
 
-        if(currentCredit.compareTo(amount) < 0) {
+        // If currenntCredit is less than amount or not
+        if (currentCredit.compareTo(amount) < 0) {
             return false;
         } else {
             return true;

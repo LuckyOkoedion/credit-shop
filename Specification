@@ -1,3 +1,20 @@
+
+spring.datasource.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASS}
+
+
+
+
+
+
+
+
+
+
+
+
+
 CreditPolicyEntity - reset_when (month-start, month-end, bi-month-start, bi-month-end, quarter-start, quarter-end, six-months-start, six-months-end, year-start, year-end), reload_when (month-start, month-end, bi-month-start, bi-month-end, quarter-start, quarter-end, six-months-start, six-months-end, year-start, year-end), credit_limit(Float - percentage of last quarter deposit)
 
 CustomersEntity - first_name, last_name, email, password, credit_card_number, credit_card_type, credit_card_bank, credit_card_expiration, credit (belongsTo -> CreditEntity), wallet_ballance

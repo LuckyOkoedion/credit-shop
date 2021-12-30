@@ -15,13 +15,11 @@ public class ProductEntity {
     @Column
     private String brand;
     @Column
-    private String source_image_id;
+    private Long source_image_id;
     @Column
     private String description;
     @Column
     private BigDecimal amount;
-    @Column
-    private String picture_url;
     @Column
     private int quantity;
     @OneToMany(
@@ -35,13 +33,12 @@ public class ProductEntity {
 
     }
 
-    public ProductEntity(String name, String brand, String source_image_id, String description, BigDecimal amount, String picture_url, int quantity, List<PurchaseEntity> purchase ) {
+    public ProductEntity(String name, String brand, Long source_image_id, String description, BigDecimal amount, int quantity, List<PurchaseEntity> purchase ) {
         this.name = name;
         this.brand = brand;
         this.source_image_id = source_image_id;
         this.description = description;
         this.amount = amount;
-        this.picture_url = picture_url;
         this.quantity = quantity;
         this.purchase = purchase;
     }
@@ -80,11 +77,11 @@ public class ProductEntity {
         this.brand = brand;
     }
 
-    public String getSource_image_id() {
+    public Long getSource_image_id() {
         return source_image_id;
     }
 
-    public void setSource_image_id(String source_image_id) {
+    public void setSource_image_id(Long source_image_id) {
         this.source_image_id = source_image_id;
     }
 
@@ -102,14 +99,6 @@ public class ProductEntity {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public String getPicture_url() {
-        return picture_url;
-    }
-
-    public void setPicture_url(String picture_url) {
-        this.picture_url = picture_url;
     }
 
     public int getQuantity() {

@@ -40,9 +40,10 @@ public class AdminAuthController implements IAuthMvcController<AdminEntity> {
         return "register_admin";
     }
 
-    // @PostMapping("/admin-login")
+    @PostMapping("/admin-login")
     @Override
     public String login(@ModelAttribute("admin") AdminEntity admin) {
+        
         return "redirect:/admin";
     }
 
