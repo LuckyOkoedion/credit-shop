@@ -43,7 +43,7 @@ public class AdminAuthController implements IAuthMvcController<AdminEntity> {
     @PostMapping("/admin-login")
     @Override
     public String login(@ModelAttribute("admin") AdminEntity admin) {
-        
+
         return "redirect:/admin";
     }
 
