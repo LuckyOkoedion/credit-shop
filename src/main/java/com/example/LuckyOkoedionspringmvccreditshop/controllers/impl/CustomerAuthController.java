@@ -25,14 +25,14 @@ public class CustomerAuthController implements IAuthMvcController<CustomersEntit
 
     @PostMapping("/register-customer")
     @Override
-    public String register( @ModelAttribute("user") CustomersEntity user) {
+    public String register(@ModelAttribute("user") CustomersEntity user) {
         user.setWallet_ballance(new BigDecimal("0"));
         CustomersEntity customer = customerService.create(user);
         CreditEntity credit = new CreditEntity();
         credit.setCustomer(customer);
         credit.setAvailable_credit(new BigDecimal("0"));
         credit.setWallet_balance(new BigDecimal("0"));
-        
+
         customerService.createCreditEntityForCustomer(customer.getId(), credit);
         return "redirect:/login-customer";
     }
@@ -44,9 +44,9 @@ public class CustomerAuthController implements IAuthMvcController<CustomersEntit
         return "register_on_purchase";
     }
 
-    // @PostMapping("/login-customer")
+    @PostMapping("/login-customer")
     @Override
-    public String login( @ModelAttribute("user") CustomersEntity modelAttribute) {
+    public String login(@ModelAttribute("user") CustomersEntity modelAttribute) {
         return "redirect:/cart_checkout";
     }
 
