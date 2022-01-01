@@ -14,7 +14,7 @@
 <body>
 
 
-    <div class="container">
+    <div class="container" style="min-height: 80vh; margin-top: 50px;">
         <div class="py-5 text-center">
 
             <h2>Checkout form</h2>
@@ -204,10 +204,12 @@
                     </div>
                     <hr class="mb-4">
                     <form th:action="@{/purchase-with-wallet}" method="post" th:if="${payment_option == 'WALLET'}">
-                        <input class="btn btn-primary btn-lg btn-block" type="submit" name="wallet_pay" value="Pay From Wallet" />
+                        <input class="btn btn-primary btn-lg btn-block" type="submit" name="wallet_pay"
+                            value="Pay From Wallet" />
                     </form>
                     <form th:action="@{/purchase-with-credit}" method="post" th:if="${payment_option == 'CREDIT'}">
-                        <input class="btn btn-primary btn-lg btn-block" type="submit" name="credit_pay" value="Pay From Credit" />
+                        <input class="btn btn-primary btn-lg btn-block" type="submit" name="credit_pay"
+                            value="Pay From Credit" />
                     </form>
                 </form>
             </div>

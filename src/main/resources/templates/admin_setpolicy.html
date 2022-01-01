@@ -13,28 +13,33 @@
 
 <body>
 
-    <div class="container">
+    <div class="container" style="min-height: 80vh; margin-top: 50px;">
         <div>
             <h1>Set The Credit Policy for The Company</h1>
         </div>
 
-        <form th:action="@{/policy}" th:object="${policy}" method="post"
-            style="max-width: 600px; margin: 0 auto;">
+        <form th:action="@{/policy}" th:object="${policy}" method="post" style="max-width: 600px; margin: 0 auto;">
             <div class="m-3">
                 <div class="form-group row">
-                    <label class="col-4 col-form-label"> <b>RESET: </b>When Should All Credits Be Reset to Zero?: </label>
+                    <label class="col-4 col-form-label"> <b>RESET: </b>When Should All Credits Be Reset to Zero?:
+                    </label>
                     <div class="col-8">
                         <select th:field="*{reset_when}" class="form-select" aria-label="Default select example">
-                            <option th:each="the_option : ${T(com.example.LuckyOkoedionspringmvccreditshop.pojo.ResetWhenReloadWhenEnum).values()}" th:value="${the_option}" th:text="${the_option}"></option>
-                          </select>
+                            <option
+                                th:each="the_option : ${T(com.example.LuckyOkoedionspringmvccreditshop.pojo.ResetWhenReloadWhenEnum).values()}"
+                                th:value="${the_option}" th:text="${the_option}"></option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-4 col-form-label"><b>RELOAD: </b>When Should All Customers Credit Be Re-calculated?: </label>
+                    <label class="col-4 col-form-label"><b>RELOAD: </b>When Should All Customers Credit Be
+                        Re-calculated?: </label>
                     <div class="col-8">
                         <select th:field="*{reload_when}" class="form-select" aria-label="Default select example">
-                            <option th:each="the_option : ${T(com.example.LuckyOkoedionspringmvccreditshop.pojo.ResetWhenReloadWhenEnum).values()}" th:value="${the_option}" th:text="${the_option}"></option>
-                          </select>
+                            <option
+                                th:each="the_option : ${T(com.example.LuckyOkoedionspringmvccreditshop.pojo.ResetWhenReloadWhenEnum).values()}"
+                                th:value="${the_option}" th:text="${the_option}"></option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -44,14 +49,14 @@
                     </div>
                 </div>
 
-               
+
 
                 <div>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </form>
-        
+
 
     </div>
 

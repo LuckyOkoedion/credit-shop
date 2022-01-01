@@ -13,12 +13,12 @@
 
 <body>
 
-    <div class="container">
+    <div class="container" style="min-height: 80vh; margin-top: 50px;">
         <div th:if="${products != null}">
             <div class="row">
                 <h1> List of Products </h1>
             </div>
-    
+
             <div class="row">
                 <div class="col-lg-3">
                     <a th:href="@{/add-product}" class="btn btn-primary btn-sm mb-3"> Add Product</a>
@@ -33,7 +33,7 @@
                         <th> Actions </th>
                     </tr>
                 </thead>
-    
+
                 <tbody>
                     <tr th:each="product: ${products}">
                         <td th:text="${product.name}"></td>
@@ -41,21 +41,21 @@
                         <td th:text="${#numbers.formatCurrency(product.amount)}"></td>
                         <td>
                             <a th:href="@{/edit-product/{id}(id=${product.id})}" class="btn btn-primary">Update</a>
-    
+
                             <a th:href="@{/delete-product/{id}(id=${product.id})}" class="btn btn-danger">Delete</a>
-    
+
                         </td>
                     </tr>
                 </tbody>
-    
+
             </table>
 
         </div>
 
         <h3 th:if="${products == null}">There are no items in the shop yet. Come back when products are added</h3>
-		
 
-	</div>
+
+    </div>
 
     <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">Designed and programmed by <a href="https://www.linkedin.com/in/lucky-okoedion-28b7286a/">Lucky

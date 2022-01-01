@@ -51,7 +51,9 @@ public class MainWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
                 .requiresSecure();
         http.authorizeRequests()
-                .antMatchers("/", "/shop", "/register-admin", "/admin-login", "/register-customer", "/login-customer", "/add-product-to-cart", "/show-product-image").permitAll()
+                .antMatchers("/", "/shop", "/register-admin", "/admin-login", "/register-customer", "/login-customer",
+                        "/add-product-to-cart", "/show-product-image")
+                .permitAll()
                 .antMatchers("/purchase", "/checkout", "/purchase-with-credit", "/purchase-with-wallet").authenticated()
                 .and()
                 .formLogin()
