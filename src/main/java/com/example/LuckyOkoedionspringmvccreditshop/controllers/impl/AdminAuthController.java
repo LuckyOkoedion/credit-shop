@@ -32,7 +32,7 @@ public class AdminAuthController implements IAuthMvcController<AdminEntity> {
 
     @PostMapping("/register-admin")
     @Override
-    public String register( @ModelAttribute("admin") AdminEntity admin) {
+    public String register(@ModelAttribute("admin") AdminEntity admin) {
         adminService.create(admin);
         return "redirect:/admin-login";
     }
@@ -40,29 +40,32 @@ public class AdminAuthController implements IAuthMvcController<AdminEntity> {
     @GetMapping("/register-admin")
     @Override
     public String theRegisterForm(Model model) {
-        if(adminSecurityService.isAuthenticated()) {
+        if (adminSecurityService.isAuthenticated()) {
             return "redirect:/admin";
         }
         model.addAttribute("admin", new AdminEntity());
         return "register_admin";
     }
 
-//    @PostMapping("/admin-login")
-//    @Override
-//    public String login(@ModelAttribute("admin") AdminEntity admin) {
-//
-//        return "redirect:/admin";
-//    }
+    // @PostMapping("/admin-login")
+    // @Override
+    // public String login(@ModelAttribute("admin") AdminEntity admin) {
+    //
+    // return "redirect:/admin";
+    // }
 
-//    @PostMapping("/admin-logout")
-//    @Override
-//    public String logout(AdminEntity modelAttribute) {
-//        return "redirect:/admin-login";
-//    }
+    // @PostMapping("/admin-logout")
+    // @Override
+    // public String logout(AdminEntity modelAttribute) {
+    // return "redirect:/admin-login";
+    // }
 
     @GetMapping("/admin-login")
     @Override
     public String theLoginForm(Model model) {
+        if(adminSecurityService.isAuthenticated()) {
+            return "redirect:/admin";
+        }
         return "login_admin";
     }
 }

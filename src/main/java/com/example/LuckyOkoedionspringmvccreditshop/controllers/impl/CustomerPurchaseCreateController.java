@@ -1,5 +1,7 @@
 package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
+import com.example.LuckyOkoedionspringmvccreditshop.ISecurityService;
+import com.example.LuckyOkoedionspringmvccreditshop.MainSecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.controllers.ICreateMvcController;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.CustomersEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.ProductEntity;
@@ -34,13 +36,15 @@ public class CustomerPurchaseCreateController {
     private IPaymentMethodService payByCreditService;
     private ICustomerService customerService;
     private ICreditLimitValidatorService creditLimitValidatorService;
+    private ISecurityService customerSecurityService;
 
-    public CustomerPurchaseCreateController(PurchaseService thePurchaseService, PaymentByCreditService payByCreditService, PaymentByWalletService payByWalletService, CustomerService customerService, CreditLimitValidatorService creditLimitValidatorService) {
+    public CustomerPurchaseCreateController(PurchaseService thePurchaseService, PaymentByCreditService payByCreditService, PaymentByWalletService payByWalletService, CustomerService customerService, CreditLimitValidatorService creditLimitValidatorService, MainSecurityService theCustomerSecurityService) {
         this.purchaseService = thePurchaseService;
         this.payByCreditService = payByCreditService;
         this.payByWalletService = payByWalletService;
         this.customerService = customerService;
         this.creditLimitValidatorService = creditLimitValidatorService;
+        this.customerSecurityService = theCustomerSecurityService;
     }
 
     @PostMapping("/purchase-with-wallet")
@@ -89,13 +93,17 @@ public class CustomerPurchaseCreateController {
 
     @GetMapping("/checkout")
     public String theCreateForm(Model model, @ModelAttribute("purchase-dto") PurchaseDto dto) {
-        model.addAttribute("purchase-dto", dto);
-        Integer cart_size = dto.getProducts().size();
-        List<CartItemDto> cart_items = dto.getProducts();
-        model.addAttribute("cart_items", cart_items);
-        model.addAttribute("cart_size", cart_size);
-        model.addAttribute("payment_option", new PaymentOption());
-        return "cart_checkout";
+        if(customerSecurityService.isAuthenticated()) {
+            model.addAttribute("purchase-dto", dto);
+            Integer cart_size = dto.getProducts().size();
+            List<CartItemDto> cart_items = dto.getProducts();
+            model.addAttribute("cart_items", cart_items);
+            model.addAttribute("cart_size", cart_size);
+            model.addAttribute("payment_option", new PaymentOption());
+            return "cart_checkout";
+        }
+        return "redirect:/login-customer";
+
     }
 
     @PostMapping("/add-product-to-cart")

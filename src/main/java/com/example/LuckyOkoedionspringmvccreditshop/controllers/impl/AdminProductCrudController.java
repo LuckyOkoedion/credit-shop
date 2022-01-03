@@ -1,5 +1,7 @@
 package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
+import com.example.LuckyOkoedionspringmvccreditshop.AdminSecurityService;
+import com.example.LuckyOkoedionspringmvccreditshop.ISecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.FileEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.ProductEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.services.IFileCrudService;
@@ -31,12 +33,14 @@ public class AdminProductCrudController {
 
     private IProductService productService;
     private IFileCrudService fileService;
+    private ISecurityService adminSecurityService;
 
-    public AdminProductCrudController(ProductService theProductService, FileCrudService theFileService
+    public AdminProductCrudController(ProductService theProductService, FileCrudService theFileService, AdminSecurityService theAdminSecurityService
     ) {
         super();
         this.productService = theProductService;
         this.fileService = theFileService;
+        this.adminSecurityService = theAdminSecurityService;
 
     }
 
@@ -73,15 +77,23 @@ public class AdminProductCrudController {
 
     @GetMapping("/add-product")
     public String theCreateForm(Model model) {
-        model.addAttribute("product", new ProductEntity());
-        return "admin_add_product";
+        if(adminSecurityService.isAuthenticated()) {
+            model.addAttribute("product", new ProductEntity());
+            return "admin_add_product";
+        }
+        return "redirect:/admin-login";
+
 
     }
 
     @GetMapping("/admin-products-list")
     public String getAll(Model model) {
-        model.addAttribute("products", productService.getAll());
-        return "admin_products_list";
+        if(adminSecurityService.isAuthenticated()) {
+            model.addAttribute("products", productService.getAll());
+            return "admin_products_list";
+        }
+        return "redirect:/admin-login";
+
     }
 
     public String getOneById(@PathVariable Long id, Model model) {
@@ -90,13 +102,17 @@ public class AdminProductCrudController {
 
     @GetMapping("/edit-product/{id}")
     public String theUpdateForm(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productService.getOneById(id));
-        return "admin_product_edit";
+        if(adminSecurityService.isAuthenticated()) {
+            model.addAttribute("product", productService.getOneById(id));
+            return "admin_product_edit";
+        }
+        return "redirect:/admin-login";
     }
 
     @GetMapping("/show-product-image/{id}")
     @ResponseBody
     public void showImage(@PathVariable Long id, HttpServletResponse response, Optional<FileEntity> image) throws ServletException, IOException {
+
         image = Optional.ofNullable(fileService.getOneById(id));
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
         response.getOutputStream().write(image.get().getData());
@@ -122,7 +138,11 @@ public class AdminProductCrudController {
 
     @DeleteMapping("/delete-product/{id}")
     public String delete(@PathVariable Long id) {
-        productService.destroy(id);
-        return "redirect:/admin-products-list";
+        if (adminSecurityService.isAuthenticated()) {
+            productService.destroy(id);
+            return "redirect:/admin-products-list";
+        }
+        return "redirect:/admin-login";
+
     }
 }

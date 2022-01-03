@@ -1,5 +1,7 @@
 package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
+import com.example.LuckyOkoedionspringmvccreditshop.AdminSecurityService;
+import com.example.LuckyOkoedionspringmvccreditshop.ISecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.controllers.ICrudMvcController;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.CreditPolicyEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.services.ICreditPolicyService;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AdminPolicyCrudController implements ICrudMvcController<CreditPolicyEntity> {
 
     private ICreditPolicyService creditPolicyService;
+    private ISecurityService adminSecurityService;
 
-    public AdminPolicyCrudController(CreditPolicyService theCreditPolicyService) {
+    public AdminPolicyCrudController(CreditPolicyService theCreditPolicyService, AdminSecurityService theAdminSecurityService) {
         super();
         this.creditPolicyService = theCreditPolicyService;
+        this.adminSecurityService = theAdminSecurityService;
     }
 
     @PostMapping("/policy")
@@ -31,8 +35,12 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
     @GetMapping("/policy")
     @Override
     public String theCreateForm(Model model) {
-        model.addAttribute("policy", new CreditPolicyEntity());
-        return "admin_setpolicy";
+        if(adminSecurityService.isAuthenticated()) {
+            model.addAttribute("policy", new CreditPolicyEntity());
+            return "admin_setpolicy";
+        }
+        return "redirect:/admin-login";
+
     }
 
     @Override
@@ -49,8 +57,12 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
     @GetMapping("/policy-edit/{id}")
     @Override
     public String theUpdateForm(@PathVariable Long id, Model model) {
-        model.addAttribute("policy", creditPolicyService.getOneById(id));
-        return "admin_policy_edit";
+        if(adminSecurityService.isAuthenticated()) {
+            model.addAttribute("policy", creditPolicyService.getOneById(id));
+            return "admin_policy_edit";
+        }
+        return "redirect:/admin-login";
+
     }
 
     @PostMapping("policy-edit/{id}")
