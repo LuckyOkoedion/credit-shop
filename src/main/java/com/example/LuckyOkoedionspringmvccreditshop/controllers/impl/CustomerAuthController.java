@@ -44,11 +44,11 @@ public class CustomerAuthController implements IAuthMvcController<CustomersEntit
         return "register_on_purchase";
     }
 
-    @PostMapping("/login-customer")
-    @Override
-    public String login(@ModelAttribute("user") CustomersEntity modelAttribute) {
-        return "redirect:/cart_checkout";
-    }
+//    @PostMapping("/login-customer")
+//    @Override
+//    public String login(@ModelAttribute("user") CustomersEntity modelAttribute) {
+//        return "redirect:/cart_checkout";
+//    }
 
     @GetMapping("/login-customer")
     @Override

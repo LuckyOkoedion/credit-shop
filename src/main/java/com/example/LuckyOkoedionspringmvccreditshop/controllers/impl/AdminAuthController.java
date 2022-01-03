@@ -1,5 +1,7 @@
 package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
+import com.example.LuckyOkoedionspringmvccreditshop.AdminSecurityService;
+import com.example.LuckyOkoedionspringmvccreditshop.ISecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.controllers.IAuthMvcController;
 import com.example.LuckyOkoedionspringmvccreditshop.controllers.ILoginMvcController;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.AdminEntity;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AdminAuthController implements IAuthMvcController<AdminEntity> {
 
     private IAdminService adminService;
+    private ISecurityService adminSecurityService;
 
-    public AdminAuthController(AdminService theAdminService) {
+    public AdminAuthController(AdminService theAdminService, AdminSecurityService theAdminSecurityService) {
         super();
         this.adminService = theAdminService;
+        this.adminSecurityService = theAdminSecurityService;
     }
 
     @GetMapping("")
@@ -36,16 +40,25 @@ public class AdminAuthController implements IAuthMvcController<AdminEntity> {
     @GetMapping("/register-admin")
     @Override
     public String theRegisterForm(Model model) {
+        if(adminSecurityService.isAuthenticated()) {
+            return "redirect:/admin";
+        }
         model.addAttribute("admin", new AdminEntity());
         return "register_admin";
     }
 
-    @PostMapping("/admin-login")
-    @Override
-    public String login(@ModelAttribute("admin") AdminEntity admin) {
+//    @PostMapping("/admin-login")
+//    @Override
+//    public String login(@ModelAttribute("admin") AdminEntity admin) {
+//
+//        return "redirect:/admin";
+//    }
 
-        return "redirect:/admin";
-    }
+//    @PostMapping("/admin-logout")
+//    @Override
+//    public String logout(AdminEntity modelAttribute) {
+//        return "redirect:/admin-login";
+//    }
 
     @GetMapping("/admin-login")
     @Override

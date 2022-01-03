@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 public interface IAuthMvcController<E> {
     String register(E modelAttribute);
     String theRegisterForm(Model model);
-    String login(E modelAttribute);
+//    String login(E modelAttribute);
+//    String logout(E modelAttribute);
     String theLoginForm(Model model);
 }

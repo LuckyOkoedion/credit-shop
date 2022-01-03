@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,6 +41,17 @@ public class MainWebSecurityConfig extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public CustomCustomerDetailsService customCustomerDetailsService() {
+        return new CustomCustomerDetailsService();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(mainAuthenticationProvider());
@@ -52,17 +64,17 @@ public class MainWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .requiresSecure();
         http.authorizeRequests()
                 .antMatchers("/", "/shop", "/register-admin", "/admin-login", "/register-customer", "/login-customer",
-                        "/add-product-to-cart", "/show-product-image")
+                        "/add-product-to-cart", "/show-product-image", "/admin-logout")
                 .permitAll()
                 .antMatchers("/purchase", "/checkout", "/purchase-with-credit", "/purchase-with-wallet").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login-customer")
                 .usernameParameter("email")
-                .defaultSuccessUrl("/shop")
+                .defaultSuccessUrl("/checkout")
                 .permitAll()
                 .and()
-                .logout().logoutSuccessUrl("/").permitAll();
+                .logout().logoutSuccessUrl("/shop").permitAll();
     }
 
 }

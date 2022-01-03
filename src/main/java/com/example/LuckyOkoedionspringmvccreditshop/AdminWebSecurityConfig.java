@@ -3,8 +3,6 @@ package com.example.LuckyOkoedionspringmvccreditshop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,6 +30,13 @@ public class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public CustomAdminDetailsService customAdminDetailsService() {
+        return  new CustomAdminDetailsService();
+    }
+
+
+
+    @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(adminUserDetailsService());
@@ -50,7 +55,7 @@ public class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
                 .requiresSecure();
         http.authorizeRequests()
-                .antMatchers("/", "/shop", "/register-admin", "/admin-login", "/register-customer", "/login-customer", "/show-product-image").permitAll()
+                .antMatchers("/", "/shop", "/register-admin", "/admin-login", "/register-customer", "/login-customer", "/show-product-image", "/admin-logout").permitAll()
                 .antMatchers("/policy", "/policy-edit", "/add-product", "/admin-products-list", "/edit-product", "/delete-product", "/generate-purchase-report", "/admin-purchases").authenticated()
                 .and()
                 .formLogin()
@@ -59,7 +64,7 @@ public class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/admin")
                 .permitAll()
                 .and()
-                .logout().logoutSuccessUrl("/").permitAll();
+                .logout().logoutSuccessUrl("/shop").permitAll();
     }
 
 }
