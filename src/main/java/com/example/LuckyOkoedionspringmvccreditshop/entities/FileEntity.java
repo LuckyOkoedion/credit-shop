@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class FileEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue()
     private Long id;
     @Column
     private String name;

@@ -1,8 +1,7 @@
 package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
 import com.example.LuckyOkoedionspringmvccreditshop.ISecurityService;
-import com.example.LuckyOkoedionspringmvccreditshop.MainSecurityService;
-import com.example.LuckyOkoedionspringmvccreditshop.controllers.ICreateMvcController;
+import com.example.LuckyOkoedionspringmvccreditshop.SecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.CustomersEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.ProductEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.PurchaseEntity;
@@ -24,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.security.Principal;
-import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -36,20 +33,26 @@ public class CustomerPurchaseCreateController {
     private IPaymentMethodService payByCreditService;
     private ICustomerService customerService;
     private ICreditLimitValidatorService creditLimitValidatorService;
-    private ISecurityService customerSecurityService;
+    private ISecurityService securityService;
 
-    public CustomerPurchaseCreateController(PurchaseService thePurchaseService, PaymentByCreditService payByCreditService, PaymentByWalletService payByWalletService, CustomerService customerService, CreditLimitValidatorService creditLimitValidatorService, MainSecurityService theCustomerSecurityService) {
+    public CustomerPurchaseCreateController(PurchaseService thePurchaseService,
+            PaymentByCreditService payByCreditService, PaymentByWalletService payByWalletService,
+            CustomerService customerService, CreditLimitValidatorService creditLimitValidatorService,
+                                            SecurityService theSecurityService) {
         this.purchaseService = thePurchaseService;
         this.payByCreditService = payByCreditService;
         this.payByWalletService = payByWalletService;
         this.customerService = customerService;
         this.creditLimitValidatorService = creditLimitValidatorService;
-        this.customerSecurityService = theCustomerSecurityService;
+        this.securityService = theSecurityService;
     }
 
-    @PostMapping("/purchase-with-wallet")
+    @PostMapping("customer/purchase-with-wallet")
 
-    public String create(Model model, @ModelAttribute("purchase-dto") PurchaseDto dto, @ModelAttribute("payment_option") PaymentOption payment_option, @RequestParam("transaction_id") String transaction_id, RedirectAttributes redirectAttributes, Authentication auth) {
+    public String create(Model model, @ModelAttribute("purchase-dto") PurchaseDto dto,
+            @ModelAttribute("payment_option") PaymentOption payment_option,
+            @RequestParam("transaction_id") String transaction_id, RedirectAttributes redirectAttributes,
+            Authentication auth) {
         model.addAttribute("purchase-dto", dto);
         PurchaseDto finalOrder = new PurchaseDto(transaction_id, dto.getProducts());
         String currentUserEmail = auth.getName();
@@ -57,9 +60,9 @@ public class CustomerPurchaseCreateController {
         BigDecimal walletBallance = currentUser.getWallet_ballance();
 
         if (walletBallance.compareTo(finalOrder.getGrandtotal()) < 0) {
-        // Insufficient funds
+            // Insufficient funds
             redirectAttributes.addFlashAttribute("message",
-                    "Insufficient Funds in the wallet !" );
+                    "Insufficient Funds in the wallet !");
         } else {
             // Process payment
             payByWalletService.pay(finalOrder.getGrandtotal(), currentUser.getId(), transaction_id);
@@ -70,13 +73,17 @@ public class CustomerPurchaseCreateController {
         return "payment_success_page";
     }
 
-    @PostMapping("/purchase-with-credit")
-    public String creditPurchase(Model model, @ModelAttribute("purchase-dto") PurchaseDto dto, @ModelAttribute("payment_option") PaymentOption payment_option, @RequestParam("transaction_id") String transaction_id, RedirectAttributes redirectAttributes, Authentication auth) {
+    @PostMapping("/customer/purchase-with-credit")
+    public String creditPurchase(Model model, @ModelAttribute("purchase-dto") PurchaseDto dto,
+            @ModelAttribute("payment_option") PaymentOption payment_option,
+            @RequestParam("transaction_id") String transaction_id, RedirectAttributes redirectAttributes,
+            Authentication auth) {
         model.addAttribute("purchase-dto", dto);
         PurchaseDto finalOrder = new PurchaseDto(transaction_id, dto.getProducts());
         String currentUserEmail = auth.getName();
         CustomersEntity currentUser = customerService.findByEmail(currentUserEmail);
-        Boolean sufficientFunds = creditLimitValidatorService.isThereSufficientCredit(finalOrder.getGrandtotal(), currentUser.getId());
+        Boolean sufficientFunds = creditLimitValidatorService.isThereSufficientCredit(finalOrder.getGrandtotal(),
+                currentUser.getId());
         if (sufficientFunds) {
             // Process payment
             payByCreditService.pay(finalOrder.getGrandtotal(), currentUser.getId(), transaction_id);
@@ -85,7 +92,7 @@ public class CustomerPurchaseCreateController {
 
         } else {
             redirectAttributes.addFlashAttribute("message",
-                    "Insufficient Funds in your credit account !" );
+                    "Insufficient Funds in your credit account !");
         }
 
         return "payment_success_page";
@@ -93,7 +100,7 @@ public class CustomerPurchaseCreateController {
 
     @GetMapping("/checkout")
     public String theCreateForm(Model model, @ModelAttribute("purchase-dto") PurchaseDto dto) {
-        if(customerSecurityService.isAuthenticated()) {
+        if (securityService.isAuthenticated()) {
             model.addAttribute("purchase-dto", dto);
             Integer cart_size = dto.getProducts().size();
             List<CartItemDto> cart_items = dto.getProducts();
@@ -106,12 +113,14 @@ public class CustomerPurchaseCreateController {
 
     }
 
+
     @PostMapping("/add-product-to-cart")
-    public String addToCart(Model model, @ModelAttribute("product") ProductEntity product, @ModelAttribute("purchase-dto") PurchaseDto dto,
-                            @ModelAttribute("payment_option") PaymentOption payment_option,
+    public String addToCart(Model model, @ModelAttribute("product") ProductEntity product,
+            @ModelAttribute("purchase-dto") PurchaseDto dto,
+            @ModelAttribute("payment_option") PaymentOption payment_option,
             @RequestParam("quantity") Integer quantity) {
-                CartItemDto theItem = new CartItemDto(product, quantity);
-                dto.addProducts(theItem);
+        CartItemDto theItem = new CartItemDto(product, quantity);
+        dto.addProducts(theItem);
         model.addAttribute("purchase-dto", dto);
         Integer cart_size = dto.getProducts().size();
         List<CartItemDto> cart_items = dto.getProducts();
@@ -123,10 +132,11 @@ public class CustomerPurchaseCreateController {
 
     }
 
-    private void recordPurchase(PurchaseDto thePurchaseDto, String transaction_id, CustomersEntity theCustomer, String payment_method) {
+    private void recordPurchase(PurchaseDto thePurchaseDto, String transaction_id, CustomersEntity theCustomer,
+            String payment_method) {
         List<CartItemDto> products = thePurchaseDto.getProducts();
 
-        for(CartItemDto item : products) {
+        for (CartItemDto item : products) {
             PurchaseEntity purchase = new PurchaseEntity();
             purchase.setProduct(item.getProduct());
             purchase.setCustomer(theCustomer);
@@ -136,7 +146,6 @@ public class CustomerPurchaseCreateController {
             purchaseService.create(purchase);
 
         }
-
 
     }
 }

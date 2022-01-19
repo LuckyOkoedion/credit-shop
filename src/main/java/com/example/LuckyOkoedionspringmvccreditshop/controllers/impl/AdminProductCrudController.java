@@ -1,6 +1,6 @@
 package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
-import com.example.LuckyOkoedionspringmvccreditshop.AdminSecurityService;
+import com.example.LuckyOkoedionspringmvccreditshop.SecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.ISecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.FileEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.ProductEntity;
@@ -35,16 +35,16 @@ public class AdminProductCrudController {
     private IFileCrudService fileService;
     private ISecurityService adminSecurityService;
 
-    public AdminProductCrudController(ProductService theProductService, FileCrudService theFileService, AdminSecurityService theAdminSecurityService
-    ) {
+    public AdminProductCrudController(ProductService theProductService, FileCrudService theFileService,
+            SecurityService theSecurityService) {
         super();
         this.productService = theProductService;
         this.fileService = theFileService;
-        this.adminSecurityService = theAdminSecurityService;
+        this.adminSecurityService = theSecurityService;
 
     }
 
-    @PostMapping("/add-product")
+    @PostMapping("/admin/add-product")
     public String create(@ModelAttribute("product") ProductEntity product, @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes, HttpServletRequest request) throws IOException {
 
@@ -53,7 +53,7 @@ public class AdminProductCrudController {
         String filePath = Paths.get(uploadDirectory, fileName).toString();
         File dir = new File(uploadDirectory);
 
-        if(!dir.exists()) {
+        if (!dir.exists()) {
             dir.mkdirs();
         }
 
@@ -72,23 +72,22 @@ public class AdminProductCrudController {
         productService.create(product);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
-        return "redirect:/admin-products-list";
+        return "redirect:/products-list";
     }
 
-    @GetMapping("/add-product")
+    @GetMapping("/admin/add-product")
     public String theCreateForm(Model model) {
-        if(adminSecurityService.isAuthenticated()) {
+        if (adminSecurityService.isAuthenticated()) {
             model.addAttribute("product", new ProductEntity());
             return "admin_add_product";
         }
         return "redirect:/admin-login";
 
-
     }
 
-    @GetMapping("/admin-products-list")
+    @GetMapping("/admin/products-list")
     public String getAll(Model model) {
-        if(adminSecurityService.isAuthenticated()) {
+        if (adminSecurityService.isAuthenticated()) {
             model.addAttribute("products", productService.getAll());
             return "admin_products_list";
         }
@@ -97,12 +96,12 @@ public class AdminProductCrudController {
     }
 
     public String getOneById(@PathVariable Long id, Model model) {
-        return "redirect:/admin-products-list";
+        return "redirect:admin/products-list";
     }
 
-    @GetMapping("/edit-product/{id}")
+    @GetMapping("/admin/edit-product/{id}")
     public String theUpdateForm(@PathVariable Long id, Model model) {
-        if(adminSecurityService.isAuthenticated()) {
+        if (adminSecurityService.isAuthenticated()) {
             model.addAttribute("product", productService.getOneById(id));
             return "admin_product_edit";
         }
@@ -111,7 +110,8 @@ public class AdminProductCrudController {
 
     @GetMapping("/show-product-image/{id}")
     @ResponseBody
-    public void showImage(@PathVariable Long id, HttpServletResponse response, Optional<FileEntity> image) throws ServletException, IOException {
+    public void showImage(@PathVariable Long id, HttpServletResponse response, Optional<FileEntity> image)
+            throws ServletException, IOException {
 
         image = Optional.ofNullable(fileService.getOneById(id));
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
@@ -119,7 +119,7 @@ public class AdminProductCrudController {
         response.getOutputStream().close();
     }
 
-    @PostMapping("/edit-product/{id}")
+    @PostMapping("/admin/edit-product/{id}")
     public String update(@PathVariable Long id, Model model, @ModelAttribute("product") ProductEntity product,
             @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) throws IOException {
@@ -133,14 +133,14 @@ public class AdminProductCrudController {
         productService.update(product);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
-        return "redirect:/admin-products-list";
+        return "redirect:admin/products-list";
     }
 
-    @DeleteMapping("/delete-product/{id}")
+    @DeleteMapping("/admin/delete-product/{id}")
     public String delete(@PathVariable Long id) {
         if (adminSecurityService.isAuthenticated()) {
             productService.destroy(id);
-            return "redirect:/admin-products-list";
+            return "redirect:admin/products-list";
         }
         return "redirect:/admin-login";
 

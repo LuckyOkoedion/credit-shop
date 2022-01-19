@@ -18,7 +18,6 @@ public class AdminService implements IAdminService {
         this.adminRepo = theAdminRepo;
     }
 
-
     @Override
     public List<AdminEntity> getAll() {
         return adminRepo.findAll();
@@ -41,7 +40,6 @@ public class AdminService implements IAdminService {
     public AdminEntity update(AdminEntity theObj) {
         return adminRepo.save(theObj);
     }
-
 
     @Override
     public void destroy(Long id) {

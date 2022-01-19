@@ -1,7 +1,7 @@
 package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
 import com.example.LuckyOkoedionspringmvccreditshop.ISecurityService;
-import com.example.LuckyOkoedionspringmvccreditshop.MainSecurityService;
+import com.example.LuckyOkoedionspringmvccreditshop.SecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.controllers.IAuthMvcController;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.CreditEntity;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.CustomersEntity;
@@ -19,12 +19,12 @@ import java.math.BigDecimal;
 public class CustomerAuthController implements IAuthMvcController<CustomersEntity> {
 
     private ICustomerService customerService;
-    private ISecurityService customerSecurityService;
+    private ISecurityService securityService;
 
-    public CustomerAuthController(CustomerService theCustomerService, MainSecurityService theCustomerSecurityService) {
+    public CustomerAuthController(CustomerService theCustomerService, SecurityService theSecurityService) {
         super();
         this.customerService = theCustomerService;
-        this.customerSecurityService = theCustomerSecurityService;
+        this.securityService = theSecurityService;
     }
 
     @PostMapping("/register-customer")
@@ -54,10 +54,16 @@ public class CustomerAuthController implements IAuthMvcController<CustomersEntit
 //        return "redirect:/cart_checkout";
 //    }
 
+    // @PostMapping("/customer-logout")
+    // @Override
+    // public String logout(CustomersEntity modelAttribute) {
+    // return "redirect:/shop";
+    // }
+
     @GetMapping("/login-customer")
     @Override
     public String theLoginForm(Model model) {
-        if(customerSecurityService.isAuthenticated()) {
+        if(securityService.isAuthenticated()) {
             return "redirect:/shop";
         }
         return "login_customer_on_purchase";
