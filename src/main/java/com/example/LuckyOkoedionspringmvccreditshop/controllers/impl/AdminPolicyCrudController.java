@@ -1,6 +1,6 @@
 package com.example.LuckyOkoedionspringmvccreditshop.controllers.impl;
 
-import com.example.LuckyOkoedionspringmvccreditshop.AdminSecurityService;
+import com.example.LuckyOkoedionspringmvccreditshop.SecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.ISecurityService;
 import com.example.LuckyOkoedionspringmvccreditshop.controllers.ICrudMvcController;
 import com.example.LuckyOkoedionspringmvccreditshop.entities.CreditPolicyEntity;
@@ -19,23 +19,24 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
     private ICreditPolicyService creditPolicyService;
     private ISecurityService adminSecurityService;
 
-    public AdminPolicyCrudController(CreditPolicyService theCreditPolicyService, AdminSecurityService theAdminSecurityService) {
+    public AdminPolicyCrudController(CreditPolicyService theCreditPolicyService,
+            SecurityService theSecurityService) {
         super();
         this.creditPolicyService = theCreditPolicyService;
-        this.adminSecurityService = theAdminSecurityService;
+        this.adminSecurityService = theSecurityService;
     }
 
-    @PostMapping("/policy")
+    @PostMapping("/admin/policy")
     @Override
     public String create(@ModelAttribute("policy") CreditPolicyEntity policy) {
         creditPolicyService.create(policy);
-        return "redirect:/admin";
+        return "redirect:/admin/dashboard";
     }
 
-    @GetMapping("/policy")
+    @GetMapping("/admin/policy")
     @Override
     public String theCreateForm(Model model) {
-        if(adminSecurityService.isAuthenticated()) {
+        if (adminSecurityService.isAuthenticated()) {
             model.addAttribute("policy", new CreditPolicyEntity());
             return "admin_setpolicy";
         }
@@ -45,19 +46,19 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
 
     @Override
     public String getAll(Model model) {
-        return "redirect:/admin";
+        return "redirect:/admin/dashboard";
     }
 
     @Override
     public String getOneById(@PathVariable Long id, Model model) {
 
-        return "redirect:/admin";
+        return "redirect:/admin/dashboard";
     }
 
-    @GetMapping("/policy-edit/{id}")
+    @GetMapping("/admin/policy-edit/{id}")
     @Override
     public String theUpdateForm(@PathVariable Long id, Model model) {
-        if(adminSecurityService.isAuthenticated()) {
+        if (adminSecurityService.isAuthenticated()) {
             model.addAttribute("policy", creditPolicyService.getOneById(id));
             return "admin_policy_edit";
         }
@@ -65,7 +66,7 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
 
     }
 
-    @PostMapping("policy-edit/{id}")
+    @PostMapping("/admin/policy-edit/{id}")
     @Override
     public String update(@PathVariable Long id, Model model,
             @ModelAttribute("policy") CreditPolicyEntity policy) {
@@ -77,11 +78,11 @@ public class AdminPolicyCrudController implements ICrudMvcController<CreditPolic
 
         this.creditPolicyService.update(thePolicy);
 
-        return "redirect:/admin";
+        return "redirect:/admin/dashboard";
     }
 
     @Override
     public String delete(@PathVariable Long id) {
-        return "redirect:/admin";
+        return "redirect:/admin/dashboard";
     }
 }
